@@ -44,7 +44,7 @@ app.post(
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              from: "onboarding@resend.dev",
+              from: "contact@lycee-invest.com",
               to: customerEmail,
               subject: "Votre ebook - Merci pour votre achat !",
               html: `
