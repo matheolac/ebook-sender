@@ -46,16 +46,25 @@ app.post(
             body: JSON.stringify({
               from: "contact@lycee-invest.com",
               to: customerEmail,
-              subject: "Votre ebook - Merci pour votre achat !",
+              reply_to: "lyceeinvest@gmail.com",
+              subject: "Ton ebook est là 📘 Investis tes 500 premiers euros en 7 jours",
               html: `
-                <h2>Merci pour votre achat !</h2>
-                <p>Bonjour,</p>
-                <p>Vous trouverez votre ebook en pièce jointe.</p>
-                <p>Bonne lecture !</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #1a1a1a;">
+                  <h2 style="font-size: 22px; margin-bottom: 8px;">C'est parti 🚀</h2>
+                  <p>En 7 jours tu vas passer de zéro à investisseur. Pas de théorie floue, pas de promesses de richesse rapide. Juste les bases solides que Mathéo aurait aimé avoir dès le départ, expliquées simplement et honnêtement.</p>
+                  <p>Ton ebook est en pièce jointe. À l'intérieur tu vas apprendre à choisir la bonne enveloppe fiscale, ouvrir ton compte, comprendre et choisir ton premier ETF, passer ton premier ordre et mettre en place une routine qui travaille pour toi sur le long terme.</p>
+                  <p style="background: #f4f4f4; padding: 16px; border-left: 4px solid #000; border-radius: 4px;">
+                    <em>« Le meilleur moment pour investir était il y a 10 ans. Le deuxième meilleur moment c'est aujourd'hui. »</em>
+                  </p>
+                  <p>Bonne lecture, et si t'as des questions réponds directement à ce mail.</p>
+                  <p>— Mathéo, fondateur de <a href="https://lycee-invest.com" style="color: #000;">Lycée Invest</a></p>
+                  <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+                  <p style="font-size: 12px; color: #999;"><a href="https://lycee-invest.com" style="color: #999;">lycee-invest.com</a></p>
+                </div>
               `,
               attachments: [
                 {
-                  filename: "ebook.pdf",
+                  filename: "Investis-tes-500-premiers-euros-en-7-jours.pdf",
                   content: pdfBase64,
                 },
               ],
