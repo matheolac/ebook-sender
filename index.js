@@ -7,7 +7,9 @@ const app = express();
 const stripe = Stripe(process.env.STRIPE_WEBHOOK_SECRET);
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 2525,
+  secure: false,
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASS,
