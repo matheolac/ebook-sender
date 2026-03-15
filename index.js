@@ -1,20 +1,9 @@
 const express = require("express");
-const nodemailer = require("nodemailer");
 const Stripe = require("stripe");
 const axios = require("axios");
 const app = express();
 
 const stripe = Stripe(process.env.STRIPE_WEBHOOK_SECRET);
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 2525,
-  secure: false,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASS,
-  },
-});
 
 app.post(
   "/webhook",
@@ -46,23 +35,31 @@ app.post(
             responseType: "arraybuffer",
           });
 
-          await transporter.sendMail({
-            from: `"Ton Nom" <${process.env.GMAIL_USER}>`,
-            to: customerEmail,
-            subject: "Votre ebook - Merci pour votre achat !",
-            html: `
-              <h2>Merci pour votre achat !</h2>
-              <p>Bonjour,</p>
-              <p>Vous trouverez votre ebook en pièce jointe.</p>
-              <p>Bonne lecture !</p>
-            `,
-            attachments: [
-              {
-                filename: "ebook.pdf",
-                content: Buffer.from(response.data),
-                contentType: "application/pdf",
-              },
-            ],
+          const pdfBase64 = Buffer.from(response.data).toString("base64");
+
+          await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              from: "onboarding@resend.dev",
+              to: customerEmail,
+              subject: "Votre ebook - Merci pour votre achat !",
+              html: `
+                <h2>Merci pour votre achat !</h2>
+                <p>Bonjour,</p>
+                <p>Vous trouverez votre ebook en pièce jointe.</p>
+                <p>Bonne lecture !</p>
+              `,
+              attachments: [
+                {
+                  filename: "ebook.pdf",
+                  content: pdfBase64,
+                },
+              ],
+            }),
           });
 
           console.log(`Email envoyé à ${customerEmail}`);
